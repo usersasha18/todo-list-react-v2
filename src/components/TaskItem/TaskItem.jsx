@@ -1,15 +1,7 @@
-import initialTasks from '../../data/data.js'
-
-console.log(initialTasks)
-
-export default function TaskItem() {
+export default function TaskItem({title}) {
   return (
     <div>
-      <ul>
-        {initialTasks.map(item => (
-          <li key={item.id}>{item.title}</li>
-        ))}
-      </ul>
+        {title}
     </div>
   )
 }
