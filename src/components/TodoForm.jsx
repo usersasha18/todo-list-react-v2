@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 
-
 export default function TodoForm({addTodo}) {
-
     const [task, setTask] = useState('')
 
     const handleSbmit = (e) => {

@@ -1,5 +1,7 @@
 import {useState} from 'react'
 import TodoForm from "./TodoForm"
+import Todo from './Todo'
+import CompletedTodo from './CompletedTodo'
 
 export default function TodoWrapper() {
     const [todos, setTodos] = useState([])
@@ -14,15 +16,38 @@ export default function TodoWrapper() {
         setTodos(prevItem => prevItem.filter(todo => todo.id != id))
     }
 
+    const completedTask = (id) => {
+        setTodos(prevItem => prevItem.map(
+            todo => {
+                if(todo.id === id) {
+                    return {...todo, completed: !todo.completed}
+                }
+                return todo;
+            }))
+        }
+        const uncompleteTask = (id) => {
+            setTodos(prevItem => prevItem.map(
+                todo => todo.id === id ? {...todo, completed: false} : todo
+            ))
+        }
+
   return (
     <div>
         <TodoForm addTodo={addTodo} />
-        {todos.map((todo) => (
-            <div key={todo.id}>
-                {todo.title}
-                <button onClick={() => deleteTask(todo.id)}>delete task</button>
-            </div>
+        <h2>Задачи:</h2>
+        {todos.filter(todo => !todo.completed).map((todo) => (
+            <Todo key={todo.id} 
+                todo={todo}
+                deleteTask={() => deleteTask(todo.id)}
+                completedTask={() => completedTask(todo.id)}/>
         ))}
+        <h2>Выполненные задачи:</h2>
+        {todos.filter(todo => todo.completed).map((completedTodo) => (
+                <CompletedTodo key={completedTodo.id} 
+                    completedTodo={completedTodo}
+                    deleteTask={() => deleteTask(completedTodo.id)}
+                    uncompleteTask={() => uncompleteTask(completedTodo.id)}/>
+            ))}
     </div>
   )
 }
